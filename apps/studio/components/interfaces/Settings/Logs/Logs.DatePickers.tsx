@@ -21,6 +21,7 @@ import {
 } from 'ui'
 import { LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD } from './Logs.constants'
 import type { DatetimeHelper } from './Logs.types'
+import { useCheckEntitlements } from 'hooks/misc/useCheckEntitlements'
 
 export type DatePickerValue = {
   to: string
@@ -234,12 +235,16 @@ export const LogsDatePicker = ({
     LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD - 1
 
   const { plan: orgPlan, isLoading: isOrgPlanLoading } = useCurrentOrgPlan()
+  const { getEntitlementNumericValue } = useCheckEntitlements('security.audit_logs_days')
+  const entitledToAuditLogDays = getEntitlementNumericValue()
+  
   const showHelperBadge = (helper?: DatetimeHelper) => {
     if (!helper) return false
     if (!helper.availableIn?.length) return false
+    if (!entitledToAuditLogDays) return false
 
-    if (helper.availableIn.includes('free')) return false
-    if (helper.availableIn.includes(orgPlan?.id || 'free') && !isOrgPlanLoading) return false
+    const day = Math.abs(dayjs().diff(dayjs(helper.calcFrom()), 'day'))
+    if (day <= entitledToAuditLogDays) return false
     return true
   }
 
