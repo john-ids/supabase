@@ -234,7 +234,6 @@ export const LogsDatePicker = ({
     Math.abs(dayjs(startDate).diff(dayjs(endDate), 'days')) >
     LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD - 1
 
-  const { plan: orgPlan, isLoading: isOrgPlanLoading } = useCurrentOrgPlan()
   const { getEntitlementNumericValue } = useCheckEntitlements('security.audit_logs_days')
   const entitledToAuditLogDays = getEntitlementNumericValue()
   
