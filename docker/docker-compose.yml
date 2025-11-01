@@ -410,7 +410,7 @@ services:
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
       - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # Move data directory to SSD
-      - ../../data/supabase/db/data:/var/lib/postgresql:Z
+      - supabase_postgres_data:/var/lib/postgresql:Z
       # Use named volume for config (keeps it in Docker's managed storage)
       - db-config:/etc/postgresql-custom
     healthcheck:
@@ -536,3 +536,4 @@ services:
 # Keep db-config as a named volume (Docker managed) since it contains auto-generated configs
 volumes:
   db-config:
+  supabase_postgres_data:
