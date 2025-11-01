@@ -423,9 +423,10 @@ services:
         "-h",
         "localhost"
         ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
     depends_on:
       vector:
         condition: service_healthy
